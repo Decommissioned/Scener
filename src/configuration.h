@@ -20,6 +20,9 @@ using glm::mat4;
 #define OPENGL_MINOR_VERSION 0
 #define GLSL_VERSION 140
 
+// If the hardware does not support something, setting this to 1 may resolve it
+#define OPENGL_EXTENSIONS 1
+
 enum class ErrorCriticality
 {
         LOW, MEDIUM, HIGH

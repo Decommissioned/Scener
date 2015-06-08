@@ -18,7 +18,7 @@ uniform vec3 u_pl_position[4];
 uniform vec3 u_pl_color[4];
 
 vec3 normal = normalize(v_normal);
-vec3 to_eye = normalize(g_eye - v_position);
+vec3 to_eye = normalize(g_eye.xyz - v_position);
 
 vec3 dl(vec3 direction, vec3 color)
 {
@@ -55,6 +55,6 @@ void main()
     for (int i = 0; i < min(4, u_pl_count); i++)
         total += pl(u_pl_position[i], u_pl_color[i]);
 
-    vec3 result = u_ka * g_ambient_light + total;
+    vec3 result = u_ka * g_ambient_light.xyz + total;
     color = vec4(result, 1.0);
 }

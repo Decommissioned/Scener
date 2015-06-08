@@ -30,7 +30,7 @@ void worker_render(SDL_Window* window, const Scene& scene)
 {
         auto context = SDL_GL_CreateContext(window);
         assert(context != nullptr);
-        glewExperimental = GL_TRUE;
+        glewExperimental = OPENGL_EXTENSIONS;
         assert(glewInit() == GLEW_OK);
 
         Renderer renderer("../meshes", "../textures", "../programs");
