@@ -1,0 +1,60 @@
+{
+    "Projection": "perspective",
+    "AttenuationFactors": [1.0, 0.0, 0.0],
+    "AmbientLight": [0.25, 0.25, 0.25],
+    "Skybox": ["top", "bottom", "left", "right", "front", "back"],
+
+    "Window": {
+        "Width": 800,
+        "Height": 600,
+        "Fov": 45.0,
+        "Title": "My Scene"
+    },
+
+    "Camera": {
+        "Eye": [0.0, 0.0, 5.0],
+        "LookAt": [0.0, 0.0, 0.0],
+        "Up": [0.0, 1.0, 0.0]
+    },
+
+    "Terrain": {
+        "Width": 400,
+        "Height": 400,
+        "TileSize": 20.0,
+        "MinimumHeight": -0.5,
+        "MaximumHeight": 0.5,
+        "Spacing": 0.5,
+        "Seed": "JAVA SUCKS",
+        "Texture": "grass"
+    },
+
+    "DirectionalLights": [
+        {
+            "Color": [0.5, 0.0, 0.0],
+            "Direction": [0.0, 1.0, 0.0]
+        }
+    ],
+
+    "PointLights": [
+        {
+            "Color": [0.0, 0.0, 1.0],
+            "Position": [0.0, 0.0, 2.5]
+        }
+    ],
+
+    "Objects": [
+        {
+            "Mesh": "monkey",
+            "Texture": "none",
+            "Translate": [0.0, 0.0, 0.0],
+            "Rotate": [0.0, 0.0, 0.0],
+            "Scale": [1.0, 1.0, 1.0],
+            "Ka": [0.5, 0.5, 0.5],
+            "Kd": [0.5, 0.5, 0.5],
+            "Ks": [0.5, 0.5, 0.5],
+            "Driver": "rotate",
+            "DriverSpeed": [0.0, 1.0, 0.0]
+        }
+    ]     
+}
+

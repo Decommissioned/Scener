@@ -30,6 +30,7 @@ void worker_render(SDL_Window* window, const Scene& scene)
 {
         auto context = SDL_GL_CreateContext(window);
         assert(context != nullptr);
+        glewExperimental = GL_TRUE;
         assert(glewInit() == GLEW_OK);
 
         Renderer renderer("../meshes", "../textures", "../programs");
@@ -53,6 +54,7 @@ void initialize_SDL()
         SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
         SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
         SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+        SDL_GL_SetSwapInterval(1);
 }
 
 int main(int argc, char**argv)
