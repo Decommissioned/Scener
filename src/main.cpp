@@ -38,8 +38,12 @@ void worker_render(SDL_Window* window, const Scene& scene)
         SDL_ShowWindow(window);
         while (!quit)
         {
+                auto now = std::chrono::system_clock::now();
                 renderer.Draw(scene);
                 SDL_GL_SwapWindow(window);
+                auto delta = std::chrono::system_clock::now() - now;
+                auto duration = std::chrono::duration_cast<std::chrono::microseconds>(delta);
+                std::this_thread::sleep_for(std::chrono::microseconds(16667) - duration);
         }
         SDL_GL_DeleteContext(context);
 }
