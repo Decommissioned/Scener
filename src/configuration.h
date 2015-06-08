@@ -17,7 +17,7 @@ using glm::vec4;
 using glm::mat4;
 
 #define OPENGL_MAJOR_VERSION 2
-#define OPENGL_MINOR_VERSION 1
+#define OPENGL_MINOR_VERSION 0
 #define GLSL_VERSION 140
 
 enum class ErrorCriticality
