@@ -28,16 +28,11 @@
         "Texture": "grass"
     },
 
-    "DirectionalLights": [
-        {
-            "Color": [0.5, 0.0, 0.0],
-            "Direction": [0.0, 1.0, 0.0]
-        }
-    ],
+    "DirectionalLights": [],
 
     "PointLights": [
         {
-            "Color": [0.0, 0.0, 1.0],
+            "Color": [1.0, 1.0, 1.0],
             "Position": [0.0, 0.0, 2.5]
         }
     ],
