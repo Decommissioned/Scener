@@ -2,8 +2,12 @@
 
 in vec3 v_position;
 in vec3 v_normal;
+in vec2 v_uv;
 
 out vec4 color;
+
+uniform sampler2D sampler;
+uniform int u_enable_texture;
 
 uniform vec3 u_ka;
 uniform vec3 u_kd;
@@ -23,7 +27,7 @@ vec3 to_eye = normalize(g_eye.xyz - v_position);
 
 float attenuation(float dist, vec3 light_attenuation)
 {
-    return 1.0 / (light_attenuation.x + light_attenuation.y * dist, light_attenuation.z * light_attenuation.z * dist);
+    return 1.0 / (light_attenuation.x + light_attenuation.y * dist + light_attenuation.z * light_attenuation.z * dist);
 }
 
 vec3 specular(vec3 light_dir)
@@ -60,4 +64,8 @@ void main()
 
     vec3 result = (u_ka * g_ambient_light.xyz) + total;
     color = vec4(result, 1.0);
+    if (u_enable_texture != 0)
+    {
+        color *= texture(sampler, v_uv);
+    }
 }
