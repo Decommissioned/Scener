@@ -25,7 +25,7 @@ Image LoadPNG(const string& file)
 
         img.width = static_cast<uint32_t>(width);
         img.height = static_cast<uint32_t>(height);
-        img.nameID = ExtractName(file);
+        img.name = ExtractName(file);
 
         return img;
 }

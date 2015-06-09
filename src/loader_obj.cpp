@@ -27,7 +27,7 @@ Mesh LoadWavefrontObject(const string& file)
         data.normals = std::move(shapes[0].mesh.normals);
         data.indices = std::move(shapes[0].mesh.indices);
         data.uvs = std::move(shapes[0].mesh.texcoords);
-        data.nameID = ExtractName(file);
+        data.name = ExtractName(file);
 
         return data;
 }
