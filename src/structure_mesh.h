@@ -10,7 +10,7 @@ struct Mesh
         std::vector<float> positions;
         std::vector<float> normals;
         std::vector<float> uvs;
-        string nameID;
+        string name;
 };
 
 #endif // STRUCTURE_MESH_HEADER

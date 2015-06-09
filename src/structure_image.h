@@ -8,7 +8,7 @@ struct Image
         int width;
         int height;
         std::vector<uint8_t> data;
-        string nameID;
+        string name;
 };
 
 #endif // STRUCTURE_IMAGE_HEADER
