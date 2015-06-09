@@ -1,6 +1,8 @@
 #ifndef ENUMERATION_INPUTSTATE_HEADER
 #define ENUMERATION_INPUTSTATE_HEADER
 
+#include "configuration.h"
+
 enum class InputState
 {
         INACTIVE = 0,   // Initial state
