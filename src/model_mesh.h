@@ -15,7 +15,6 @@ class ModelMesh final
         uint32_t m_vao;
         uint32_t m_vbo[m_attributes];
         size_t m_vertices;
-        string m_name;
 
 public:
 
@@ -30,7 +29,6 @@ public:
         void Draw() const;
 
         uint32_t ID() const;
-        const string& Name() const;
 
 };
 

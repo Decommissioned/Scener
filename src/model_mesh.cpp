@@ -16,7 +16,6 @@ void ModelMesh::bind(uint32_t vao)
 ModelMesh::ModelMesh(const Mesh& data)
 {
         m_vertices = data.indices.size();
-        m_name = data.nameID;
 
         glGenVertexArrays(1, &m_vao);
         glGenBuffers(m_attributes, m_vbo);
@@ -28,7 +27,7 @@ ModelMesh::ModelMesh(const Mesh& data)
                 glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vbo[0]);
                 glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(uint32_t) * data.indices.size(), &data.indices.front(), GL_STATIC_DRAW);
         }
-        else HandleError("Mesh does not provide indices", ErrorCriticality::MEDIUM);
+        else HandleError("Mesh " + data.name + " does not provide indices", ErrorCriticality::MEDIUM);
 
         if (data.positions.size() != 0)
         {
@@ -37,7 +36,7 @@ ModelMesh::ModelMesh(const Mesh& data)
                 glVertexAttribPointer(ATTRIBUTE_POSITION, 3, GL_FLOAT, GL_FALSE, 0, 0);
                 glEnableVertexAttribArray(ATTRIBUTE_POSITION);
         }
-        else HandleError("Mesh does not provide positions", ErrorCriticality::MEDIUM);
+        else HandleError("Mesh " + data.name + " does not provide positions", ErrorCriticality::MEDIUM);
 
         if (data.uvs.size() != 0) // Positions and normals are required, texture coordinates are optional for now
         {
@@ -78,11 +77,6 @@ void ModelMesh::Draw() const
 uint32_t ModelMesh::ID() const
 {
         return m_vao;
-}
-
-const string& ModelMesh::Name() const
-{
-        return m_name;
 }
 
 uint32_t ModelMesh::m_bound_vao = 0;
