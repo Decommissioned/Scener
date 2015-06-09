@@ -1,8 +1,15 @@
 {
-    "Projection": "perspective",
-    "AttenuationFactors": [1.0, 0.0, 0.0],
-    "AmbientLight": [0.25, 0.25, 0.25],
-    "Skybox": ["top", "bottom", "left", "right", "front", "back"],
+    "AmbientLight": [0.5, 0.5, 0.5],
+    "ClearColor": [0.1, 0.1, 0.2],
+
+    "Skybox": [
+        "top",
+        "bottom",
+        "left",
+        "right",
+        "front",
+        "back"
+    ],
 
     "Window": {
         "Width": 800,
@@ -12,7 +19,7 @@
     },
 
     "Camera": {
-        "Eye": [0.0, 0.0, 5.0],
+        "Eye": [0.0, 0.0, -5.0],
         "LookAt": [0.0, 0.0, 0.0],
         "Up": [0.0, 1.0, 0.0]
     },
@@ -28,28 +35,26 @@
         "Texture": "grass"
     },
 
-    "DirectionalLights": [],
+    "DirectionalLights": [
+        { "Direction": [0.0, 1.0, 0.0], "Color": [0.0, 1.0, 0.0] }
+    ],
 
     "PointLights": [
-        {
-            "Color": [1.0, 1.0, 1.0],
-            "Position": [0.0, 0.0, 2.5]
-        }
+        { "Position": [0.0, 0.0, -2.0], "Color": [1.0, 1.0, 1.0] }
     ],
 
     "Objects": [
         {
             "Mesh": "monkey",
-            "Texture": "none",
-            "Translate": [0.0, 0.0, 0.0],
-            "Rotate": [0.0, 0.0, 0.0],
-            "Scale": [1.0, 1.0, 1.0],
-            "Ka": [0.5, 0.5, 0.5],
-            "Kd": [0.5, 0.5, 0.5],
-            "Ks": [0.5, 0.5, 0.5],
             "Driver": "rotate",
             "DriverSpeed": [0.0, 1.0, 0.0]
+        },
+        {
+            "Mesh": "quad",
+            "Rotate": [90.0, 0.0, 0.0],
+            "Scale": [100.0, 0.0, 100.0],
+            "Translate": [0.0, -1.0, 0.0]
         }
-    ]     
+    ] 
 }
 
