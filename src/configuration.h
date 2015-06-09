@@ -23,6 +23,8 @@ using glm::mat4;
 // If the hardware does not support something, setting this to 1 may resolve it
 #define OPENGL_EXTENSIONS 1
 
+#define MULTITHREADED_INPUT 0
+
 enum class ErrorCriticality
 {
         LOW, MEDIUM, HIGH
