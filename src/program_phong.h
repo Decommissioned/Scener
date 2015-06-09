@@ -27,6 +27,8 @@ class ProgramPhong final : public Program
         int32_t m_location_pl_color[MAX_LIGHTS];
         int32_t m_location_pl_attenuation[MAX_LIGHTS];
 
+        int32_t m_location_enable_texture;
+
 public:
 
         ProgramPhong(const string& folder);
@@ -41,6 +43,8 @@ public:
 
         void LoadDirectionalLights(const std::vector<DirectionalLight> lights);
         void LoadPointLights(const std::vector<PointLight> lights);
+
+        void EnableTexturing(bool enable);
 
 };
 

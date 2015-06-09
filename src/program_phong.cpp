@@ -4,7 +4,7 @@
 #include <algorithm>
 
 ProgramPhong::ProgramPhong(const string& folder)
-        : Program(folder, "phong_v.shader", "phong_f.shader", {{ATTRIBUTE_POSITION, "a_position"}, {ATTRIBUTE_NORMAL, "a_normal"}}, {"#define MAX_LIGHTS " + std::to_string(MAX_LIGHTS)})
+        : Program(folder, "phong_v.shader", "phong_f.shader", {{ATTRIBUTE_POSITION, "a_position"}, {ATTRIBUTE_NORMAL, "a_normal"}, {ATTRIBUTE_UV, "a_uv"}}, {"#define MAX_LIGHTS " + std::to_string(MAX_LIGHTS)})
 {
         m_location_model = uniformLocation("u_model");
         m_location_normal = uniformLocation("u_normal");
@@ -27,6 +27,8 @@ ProgramPhong::ProgramPhong(const string& folder)
                 m_location_pl_color[i] = uniformLocation("u_pl_color[" + istr + ']');
                 m_location_pl_attenuation[i] = uniformLocation("u_pl_attenuation[" + istr + ']');
         }
+
+        m_location_enable_texture = uniformLocation("u_enable_texture");
 }
 
 ProgramPhong::~ProgramPhong()
@@ -78,4 +80,9 @@ void ProgramPhong::LoadPointLights(const std::vector<PointLight> lights)
                 loadVec3(m_location_pl_color[i], lights[i].color);
                 loadVec3(m_location_pl_attenuation[i], lights[i].attenuation);
         }
+}
+
+void ProgramPhong::EnableTexturing(bool enable)
+{
+        loadInteger(m_location_enable_texture, int(enable));
 }
