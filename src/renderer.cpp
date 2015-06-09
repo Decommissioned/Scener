@@ -16,11 +16,17 @@ static const mat4 identity = mat4(1.0f);
 
 void Renderer::LoadResources(const string& meshes_dir, const string& textures_dir)
 {
-        auto files = ListFiles(meshes_dir, ".obj");
-        for (auto& file : files)
+        auto mesh_files = ListFiles(meshes_dir, ".obj");
+        for (auto& file : mesh_files)
         {
                 auto mesh = LoadWavefrontObject(file);
-                m_meshes.emplace(std::make_pair(mesh.nameID, mesh));
+                m_meshes.emplace(std::make_pair(mesh.name, mesh));
+        }
+        auto texture_files = ListFiles(textures_dir, ".png");
+        for (auto& file : texture_files)
+        {
+                auto texture = LoadPNG(file);
+                m_textures.emplace(std::make_pair(texture.name, texture));
         }
 }
 
@@ -62,29 +68,37 @@ void Renderer::Draw(const Scene& scene)
         m_program_phong.Bind();
         m_ubo.Update(uniforms);
 
-        for (auto& obj : scene.objects)
+        for (auto& item : scene.objects)
         {
-                auto& itr = m_meshes.find(obj.mesh);
-                if (itr != m_meshes.end())
+                auto& mesh = m_meshes.find(item.mesh);
+                if (mesh != m_meshes.end())
                 {
                         vec3 offset = {0.0f, 0.0f, 0.0f};
-                        switch (obj.driver)
+                        switch (item.driver)
                         {
-                                ncase Driver::ROTATE: offset = obj.driverSpeed * float(ticks);
+                                ncase Driver::ROTATE: offset = item.driverSpeed * float(ticks);
                         }
 
-                        mat4 rotation = glm::rotate(glm::rotate(glm::rotate(identity, (obj.rotate.x + offset.x) * rc, x), (obj.rotate.y + offset.y) * rc, y), (obj.rotate.z + offset.z) * rc, z);
-                        m_program_phong.LoadModel(glm::scale(glm::translate(identity, obj.translate), obj.scale) * rotation);
+                        mat4 rotation = glm::rotate(glm::rotate(glm::rotate(identity, (item.rotate.x + offset.x) * rc, x), (item.rotate.y + offset.y) * rc, y), (item.rotate.z + offset.z) * rc, z);
+                        m_program_phong.LoadModel(glm::scale(glm::translate(identity, item.translate), item.scale) * rotation);
                         m_program_phong.LoadNormal(rotation);
 
-                        m_program_phong.LoadKa(obj.ka);
-                        m_program_phong.LoadKd(obj.kd);
-                        m_program_phong.LoadKs(obj.ks);
+                        m_program_phong.LoadKa(item.ka);
+                        m_program_phong.LoadKd(item.kd);
+                        m_program_phong.LoadKs(item.ks);
 
                         m_program_phong.LoadDirectionalLights(scene.directionalLights);
                         m_program_phong.LoadPointLights(scene.pointLights);
 
-                        itr->second.Draw();
+                        auto& texture = m_textures.find(item.texture);
+                        bool enable_texture = texture != m_textures.end();
+                        if (enable_texture)
+                        {
+                                texture->second.Bind();
+                        }
+                        m_program_phong.EnableTexturing(enable_texture);
+
+                        mesh->second.Draw();
                 }
         }
 

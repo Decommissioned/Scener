@@ -7,6 +7,7 @@
 #include <unordered_map>
 
 #include "model_mesh.h"
+#include "model_texture2d.h"
 #include "program_phong.h"
 #include "program_uniformbuffer.h"
 
@@ -37,6 +38,8 @@ class Renderer final
         ProgramPhong m_program_phong;
         UniformBuffer m_ubo;
         std::unordered_map<string, ModelMesh> m_meshes;
+        std::unordered_map<string, Texture2D> m_textures;
+
         uint64_t ticks;
 
         void LoadResources(const string& meshes_dir, const string& textures_dir);
