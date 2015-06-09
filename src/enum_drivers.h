@@ -5,7 +5,7 @@
 
 enum class Driver
 {
-        ROTATE, NONE
+        ROTATE, NONE, MOUSE
 };
 
 #endif // ENUMERATION_DRIVERS_HEADER

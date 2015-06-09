@@ -13,8 +13,9 @@
 
 struct Scene
 {
-        vec3 attenuationFactors;
+        bool perspective;
         vec3 ambientLight;
+        vec3 clearColor;
 
         Skybox skybox;
         Window window;

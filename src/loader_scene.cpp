@@ -7,81 +7,88 @@
 #include <cassert>
 
 #define ncase break; case /* no fall-through case */
-#define reader_optional(tree, key, field, reader) { auto _sub_ = tree.get_child_optional(key); if (_sub_) { field = reader (*_sub_); } }
-#define scalar_optional(tree, key, field) { auto _sub_ = tree.get_child_optional(key); if (_sub_) { field = _sub_->get_value<decltype(field)>(); } }
+#define read_function(tree, key, field, reader) { auto _sub_ = tree.get_child_optional(key); if (_sub_) { field = reader (*_sub_); } }
+#define read_scalar(tree, key, field) { auto _sub_ = tree.get_child_optional(key); if (_sub_) { field = _sub_->get_value<decltype(field)>(); } }
 
 using namespace boost::property_tree;
 
 static Skybox default_Skybox()
 {
-        return {"none", "none", "none", "none", "none", "none"};
+        Skybox skybox;
+        skybox.top = "none";
+        skybox.bottom = "none";
+        skybox.left = "none";
+        skybox.right = "none";
+        skybox.front = "none";
+        skybox.back = "none";
+        return skybox;
 }
 static Camera default_Camera()
 {
-        return {
-                {0.0f, 0.0f, -1.0f},
-                {0.0f, 0.0f, 0.0f},
-                {0.0f, 1.0f, 0.0f}
-        };
+        Camera camera;
+        camera.eye = {0.0f, 0.0f, -3.0f};
+        camera.lookAt = {0.0f, 0.0f, 0.0f};
+        camera.up = {0.0f, 1.0f, 0.0f};
+        return camera;
 }
 static Window default_Window()
 {
-        return {
-                800,
-                600,
-                45.0f,
-                "Default Scene"
-        };
+        Window window;
+        window.width = 800;
+        window.height = 600;
+        window.fov = 45.0f;
+        window.title = "Default Scene";
+        return window;
 }
 static Terrain default_Terrain()
 {
-        return {
-                50,
-                50,
-                10.0f,
-                0.0f,
-                0.0f,
-                1.0f,
-                "default",
-                "none"
-        };
+        Terrain terrain;
+        terrain.width = 50;
+        terrain.height = 50;
+        terrain.tileSize = 10.0f;
+        terrain.minimumHeight = 0.0f;
+        terrain.maximumHeight = 0.0f;
+        terrain.spacing = 1.0f;
+        terrain.seed = "default seed";
+        terrain.texture = "none";
+        return terrain;
 }
 static DirectionalLight default_DirectionalLight()
 {
-        return {
-                {1.0f, 1.0f, 1.0f},
-                {0.0f, 1.0f, 1.0f}
-        };
+        DirectionalLight light;
+        light.direction = {1.0f, 1.0f, 0.0f};
+        light.color = {1.0f, 1.0f, 1.0f};
+        return light;
 }
 static PointLight default_PointLight()
 {
-        return {
-                {1.0f, 1.0f, 1.0f},
-                {0.0f, 1.0f, 0.0f}
-        };
+        PointLight light;
+        light.position = {0.0f, 0.0f, 0.0f};
+        light.color = {1.0f, 1.0f, 1.0f};
+        light.attenuation = {0.0f, 0.0f, 1.0f};
+        return light;
 }
 static Object default_Object()
 {
-        return {
-
-                "cube",
-                "none",
-                {0.0f, 0.0f, 0.0f},
-                {0.0f, 0.0f, 0.0f},
-                {1.0f, 1.0f, 1.0f},
-                {0.25f, 0.25f, 0.25f},
-                {0.6f, 0.6f, 0.6f},
-                {0.7f, 0.7f, 0.7f},
-                Driver::NONE,
-                {0.0f, 0.0f, 0.0f}
-
-        };
+        Object object;
+        object.mesh = "cube";
+        object.texture = "none";
+        object.translate = {0.0f, 0.0f, 0.0f};
+        object.rotate = {0.0f, 0.0f, 0.0f};
+        object.scale = {1.0f, 1.0f, 1.0f};
+        object.ka = {0.25f, 0.25f, 0.25f};
+        object.kd = {0.4f, 0.4f, 0.4f};
+        object.ks = {0.4f, 0.4f, 0.4f};
+        object.driver = Driver::NONE;
+        object.driverSpeed = {0.0f, 0.0f, 0.0f};
+        return object;
 }
 static Scene default_Scene()
 {
         Scene scene;
-        scene.attenuationFactors = {1.0f, 0.0f, 0.0f};
+        scene.perspective = true;
         scene.ambientLight = {0.5f, 0.5f, 0.5f};
+        scene.clearColor = {0.0f, 0.0f, 0.0f};
         scene.skybox = default_Skybox();
         scene.camera = default_Camera();
         scene.window = default_Window();
@@ -103,6 +110,10 @@ static vec3 read_vec3(const ptree& tree)
                 index++;
         }
         return data;
+}
+static bool read_Projection(const ptree& tree)
+{
+        return tree.get_value<string>() != "ortho";
 }
 static Skybox read_Skybox(const ptree& tree)
 {
@@ -128,31 +139,31 @@ static Skybox read_Skybox(const ptree& tree)
 static Window read_Window(const ptree& tree)
 {
         Window window = default_Window();
-        scalar_optional(tree, "Width", window.width);
-        scalar_optional(tree, "Height", window.height);
-        scalar_optional(tree, "Fov", window.fov);
-        scalar_optional(tree, "Title", window.title);
+        read_scalar(tree, "Width", window.width);
+        read_scalar(tree, "Height", window.height);
+        read_scalar(tree, "Fov", window.fov);
+        read_scalar(tree, "Title", window.title);
         return window;
 }
 static Camera read_Camera(const ptree& tree)
 {
         Camera camera = default_Camera();
-        reader_optional(tree, "Eye", camera.eye, read_vec3);
-        reader_optional(tree, "LookAt", camera.lookAt, read_vec3);
-        reader_optional(tree, "Up", camera.up, read_vec3);
+        read_function(tree, "Eye", camera.eye, read_vec3);
+        read_function(tree, "LookAt", camera.lookAt, read_vec3);
+        read_function(tree, "Up", camera.up, read_vec3);
         return camera;
 }
 static Terrain read_Terrain(const ptree& tree)
 {
         Terrain terrain = default_Terrain();
-        scalar_optional(tree, "Width", terrain.width);
-        scalar_optional(tree, "Height", terrain.height);
-        scalar_optional(tree, "TileSize", terrain.tileSize);
-        scalar_optional(tree, "MinimumHeight", terrain.minimumHeight);
-        scalar_optional(tree, "MaximumHeight", terrain.maximumHeight);
-        scalar_optional(tree, "Spacing", terrain.spacing);
-        scalar_optional(tree, "Seed", terrain.seed);
-        scalar_optional(tree, "Texture", terrain.texture);
+        read_scalar(tree, "Width", terrain.width);
+        read_scalar(tree, "Height", terrain.height);
+        read_scalar(tree, "TileSize", terrain.tileSize);
+        read_scalar(tree, "MinimumHeight", terrain.minimumHeight);
+        read_scalar(tree, "MaximumHeight", terrain.maximumHeight);
+        read_scalar(tree, "Spacing", terrain.spacing);
+        read_scalar(tree, "Seed", terrain.seed);
+        read_scalar(tree, "Texture", terrain.texture);
         return terrain;
 }
 static std::vector<DirectionalLight> read_DirectionalLights(const ptree& tree)
@@ -162,8 +173,8 @@ static std::vector<DirectionalLight> read_DirectionalLights(const ptree& tree)
         for (auto& sub : tree)
         {
                 DirectionalLight light = default_DirectionalLight();
-                reader_optional(sub.second, "Color", light.color, read_vec3);
-                reader_optional(sub.second, "Direction", light.direction, read_vec3);
+                read_function(sub.second, "Color", light.color, read_vec3);
+                read_function(sub.second, "Direction", light.direction, read_vec3);
                 directionalLights.emplace_back(std::forward<DirectionalLight>(light));
         }
         return directionalLights;
@@ -175,8 +186,9 @@ static std::vector<PointLight> read_PointLights(const ptree& tree)
         for (auto& sub : tree)
         {
                 PointLight light = default_PointLight();
-                reader_optional(sub.second, "Color", light.color, read_vec3);
-                reader_optional(sub.second, "Position", light.position, read_vec3);
+                read_function(sub.second, "Color", light.color, read_vec3);
+                read_function(sub.second, "Position", light.position, read_vec3);
+                read_function(sub.second, "Attenuation", light.attenuation, read_vec3);
                 pointLights.emplace_back(std::forward<PointLight>(light));
         }
         return pointLights;
@@ -198,16 +210,16 @@ static std::vector<Object> read_Objects(const ptree& tree)
         for (auto& sub : tree)
         {
                 Object object = default_Object();
-                scalar_optional(sub.second, "Mesh", object.mesh);
-                scalar_optional(sub.second, "Texture", object.texture);
-                reader_optional(sub.second, "Translate", object.translate, read_vec3);
-                reader_optional(sub.second, "Rotate", object.rotate, read_vec3);
-                reader_optional(sub.second, "Scale", object.scale, read_vec3);
-                reader_optional(sub.second, "Ka", object.ka, read_vec3);
-                reader_optional(sub.second, "Kd", object.kd, read_vec3);
-                reader_optional(sub.second, "Ks", object.ks, read_vec3);
-                reader_optional(sub.second, "Driver", object.driver, read_Driver);
-                reader_optional(sub.second, "DriverSpeed", object.driverSpeed, read_vec3);
+                read_scalar(sub.second, "Mesh", object.mesh);
+                read_scalar(sub.second, "Texture", object.texture);
+                read_function(sub.second, "Translate", object.translate, read_vec3);
+                read_function(sub.second, "Rotate", object.rotate, read_vec3);
+                read_function(sub.second, "Scale", object.scale, read_vec3);
+                read_function(sub.second, "Ka", object.ka, read_vec3);
+                read_function(sub.second, "Kd", object.kd, read_vec3);
+                read_function(sub.second, "Ks", object.ks, read_vec3);
+                read_function(sub.second, "Driver", object.driver, read_Driver);
+                read_function(sub.second, "DriverSpeed", object.driverSpeed, read_vec3);
                 objects.emplace_back(std::forward<Object>(object));
         }
         return objects;
@@ -220,18 +232,20 @@ Scene LoadScene(const string& path)
                 Scene scene = default_Scene();
                 ptree tree;
                 read_json(path, tree);
-                reader_optional(tree, "AttenuationFactors", scene.attenuationFactors, read_vec3);
-                reader_optional(tree, "AmbientLight", scene.ambientLight, read_vec3);
-                reader_optional(tree, "Skybox", scene.skybox, read_Skybox);
-                reader_optional(tree, "Window", scene.window, read_Window);
-                reader_optional(tree, "Camera", scene.camera, read_Camera);
-                reader_optional(tree, "Terrain", scene.terrain, read_Terrain);
-                reader_optional(tree, "DirectionalLights", scene.directionalLights, read_DirectionalLights);
-                reader_optional(tree, "PointLights", scene.pointLights, read_PointLights);
-                reader_optional(tree, "Objects", scene.objects, read_Objects);
+                
+                read_function(tree, "Projection", scene.perspective, read_Projection);
+                read_function(tree, "AmbientLight", scene.ambientLight, read_vec3);
+                read_function(tree, "ClearColor", scene.clearColor, read_vec3);
+                read_function(tree, "Skybox", scene.skybox, read_Skybox);
+                read_function(tree, "Window", scene.window, read_Window);
+                read_function(tree, "Camera", scene.camera, read_Camera);
+                read_function(tree, "Terrain", scene.terrain, read_Terrain);
+                read_function(tree, "DirectionalLights", scene.directionalLights, read_DirectionalLights);
+                read_function(tree, "PointLights", scene.pointLights, read_PointLights);
+                read_function(tree, "Objects", scene.objects, read_Objects);
                 return scene;
         }
-        catch (json_parser_error error)
+        catch (const json_parser_error& error)
         {
                 std::cerr << path << '[' << error.line() << "]: " << error.message() << std::endl;
                 throw;

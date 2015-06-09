@@ -13,7 +13,6 @@ static const vec3 z = {0.0f, 0.0f, 1.0f};
 
 static const float rc = 0.0174532925f;
 static const mat4 identity = mat4(1.0f);
-static uint64_t timer = 0;
 
 void Renderer::LoadResources(const string& meshes_dir, const string& textures_dir)
 {
@@ -31,9 +30,9 @@ Renderer::Renderer(const string& meshes_dir, const string& textures_dir, const s
 
         m_ubo.AddPrograms({m_program_phong.ID()}, "global");
 
-        glClearColor(0.1f, 0.1f, 0.2f, 1.0f);
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
+        ticks = 0;
 }
 
 Renderer::~Renderer()
@@ -45,10 +44,19 @@ void Renderer::Draw(const Scene& scene)
         uniforms.eye = vec4(scene.camera.eye, 1.0f);
         uniforms.view = glm::lookAt(scene.camera.eye, scene.camera.lookAt, scene.camera.up);
         uniforms.render_distance = 1000.0f;
-        uniforms.projection = glm::perspectiveFov(scene.window.fov, float(scene.window.width), float(scene.window.height), 0.025f, 1000.0f);
-        uniforms.ambient_light = vec4(scene.ambientLight, 0.0f);
-        uniforms.attenuation = vec4(scene.attenuationFactors, 0.0f);
 
+        float aspect = float(scene.window.width) / float(scene.window.height);
+        if (scene.perspective)
+        {
+                uniforms.projection = glm::perspectiveFov(scene.window.fov, aspect, 1.0f, 0.025f, uniforms.render_distance);
+        }
+        else
+        {
+                uniforms.projection = glm::ortho(-aspect, aspect, -1.0f, 1.0f, 0.025f, uniforms.render_distance);
+        }
+        uniforms.ambient_light = vec4(scene.ambientLight, 0.0f);
+
+        glClearColor(scene.clearColor.x, scene.clearColor.y, scene.clearColor.z, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         m_program_phong.Bind();
@@ -62,11 +70,11 @@ void Renderer::Draw(const Scene& scene)
                         vec3 offset = {0.0f, 0.0f, 0.0f};
                         switch (obj.driver)
                         {
-                                ncase Driver::ROTATE: offset = obj.driverSpeed * float(timer);
+                                ncase Driver::ROTATE: offset = obj.driverSpeed * float(ticks);
                         }
 
                         mat4 rotation = glm::rotate(glm::rotate(glm::rotate(identity, (obj.rotate.x + offset.x) * rc, x), (obj.rotate.y + offset.y) * rc, y), (obj.rotate.z + offset.z) * rc, z);
-                        m_program_phong.LoadModel(glm::translate(glm::scale(identity, obj.scale), obj.translate) * rotation);
+                        m_program_phong.LoadModel(glm::scale(glm::translate(identity, obj.translate), obj.scale) * rotation);
                         m_program_phong.LoadNormal(rotation);
 
                         m_program_phong.LoadKa(obj.ka);
@@ -80,18 +88,6 @@ void Renderer::Draw(const Scene& scene)
                 }
         }
 
-        timer++;
+        ticks++;
         assert(glGetError() == 0);
-}
-
-void Renderer::ViewMatrix(const vec3& eye, const vec3& look_at, const vec3& up)
-{
-        m_global.eye = vec4(eye, 1.0);
-        m_global.view = glm::lookAt(eye, look_at, up);
-}
-
-void Renderer::PerspectiveMatrix(float aspect, float fovy, float far)
-{
-        m_global.render_distance = far;
-        m_global.projection = glm::perspectiveFov(fovy, aspect, 1.0f, 0.025f, far);
 }

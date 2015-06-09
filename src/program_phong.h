@@ -25,6 +25,7 @@ class ProgramPhong final : public Program
         int32_t m_location_pl_count;
         int32_t m_location_pl_position[MAX_LIGHTS];
         int32_t m_location_pl_color[MAX_LIGHTS];
+        int32_t m_location_pl_attenuation[MAX_LIGHTS];
 
 public:
 

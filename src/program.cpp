@@ -8,30 +8,25 @@
 #define EXPAND(value) #value
 #define STRINGFY(value) EXPAND(value)
 
-uint32_t Program::compileShader(const string& folder, const string& file, uint32_t type)
+uint32_t Program::compileShader(const string& folder, const string& file, uint32_t type, std::initializer_list<string> pre_processor)
 {
         uint32_t shaderID;
         GLint success;
         GLint length[2];
+        string directives;
         const char* src[2];
 
-        // Define specific preprocessor macros depending on the type of shader being compiled
-        if (type == GL_VERTEX_SHADER)
+        directives = "#version " STRINGFY(GLSL_VERSION) "\n";
+        for (auto& directive : pre_processor)
         {
-                src[0] = "#version " STRINGFY(GLSL_VERSION) "\n" "\n#define _VERTEX_SHADER_\n";
-        }
-        else if (type == GL_FRAGMENT_SHADER)
-        {
-                src[0] = "#version " STRINGFY(GLSL_VERSION) "\n" "\n#define _FRAGMENT_SHADER_\n";
-        }
-        else
-        {
-                src[0] = "#version " STRINGFY(GLSL_VERSION) "\n";
+                directives += directive + "\n";
         }
 
         string source = LoadShader(folder, file);
+
+        src[0] = directives.c_str();
         src[1] = source.c_str();
-        length[0] = (GLint) strlen(src[0]);
+        length[0] = (GLint) directives.length();
         length[1] = (GLint) source.length();
 
         shaderID = glCreateShader(type);
@@ -131,10 +126,10 @@ void Program::loadMat4(int32_t location, const mat4& value)
         glUniformMatrix4fv(location, 1, GL_FALSE, &value[0][0]);
 }
 
-Program::Program(const string& folder, const string& vertex_file, const string& fragment_file, std::initializer_list<std::pair<uint32_t, string>> attributes)
+Program::Program(const string& folder, const string& vertex_file, const string& fragment_file, std::initializer_list<std::pair<uint32_t, string>> attributes, std::initializer_list<string> pre_processor)
 {
-        uint32_t vertexID = compileShader(folder, vertex_file, GL_VERTEX_SHADER);
-        uint32_t fragmentID = compileShader(folder, fragment_file, GL_FRAGMENT_SHADER);
+        uint32_t vertexID = compileShader(folder, vertex_file, GL_VERTEX_SHADER, pre_processor);
+        uint32_t fragmentID = compileShader(folder, fragment_file, GL_FRAGMENT_SHADER, pre_processor);
 
         m_program = createProgram(vertexID, fragmentID);
         m_vertex_name = vertex_file;

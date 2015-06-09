@@ -7,7 +7,7 @@
 
 class Program
 {
-        static uint32_t compileShader(const string& folder, const string& file, uint32_t type);
+        static uint32_t compileShader(const string& folder, const string& file, uint32_t type, std::initializer_list<string> pre_processor = {});
         static uint32_t createProgram(uint32_t vertexID, uint32_t fragmentID);
         static void deleteShader(uint32_t programID, uint32_t shaderID);
         static void linkProgram(uint32_t programID);
@@ -31,7 +31,7 @@ protected:
         string m_fragment_name;
 
         Program() = delete;
-        Program(const string& folder, const string& vertex_file, const string& fragment_file, std::initializer_list<std::pair<uint32_t, string>> attributes = {});
+        Program(const string& folder, const string& vertex_file, const string& fragment_file, std::initializer_list<std::pair<uint32_t, string>> attributes = {}, std::initializer_list<string> pre_processor = {});
         Program(const Program&) = delete;
         const Program& operator=(const Program&) = delete;
         virtual ~Program();

@@ -37,6 +37,7 @@ class Renderer final
         ProgramPhong m_program_phong;
         UniformBuffer m_ubo;
         std::unordered_map<string, ModelMesh> m_meshes;
+        uint64_t ticks;
 
         void LoadResources(const string& meshes_dir, const string& textures_dir);
 
@@ -52,8 +53,6 @@ public:
         ~Renderer();
 
         void Draw(const Scene& scene);
-        void ViewMatrix(const vec3& eye, const vec3& look_at, const vec3& up);
-        void PerspectiveMatrix(float aspect, float fovy, float far);
 
 };
 
