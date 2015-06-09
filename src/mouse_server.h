@@ -19,10 +19,10 @@ class MouseServer final
         const static int m_RB = 2;
 
         const static size_t m_buttons_count = 3;
-        std::array<InputState, 3> m_buttons;
+        std::array<InputState, m_buttons_count + 1> m_buttons;
 
         const static size_t m_buffer_size = 16;
-        std::array<std::pair<int, bool>, m_buffer_size> m_buffer;
+        std::array<std::pair<unsigned char, bool>, m_buffer_size> m_buffer;
         size_t m_read_index, m_write_index;
 
         friend class MouseClient;
@@ -39,8 +39,8 @@ public:
         void Update();
         void Reset();
 
-        void PressButton(int buttonID);
-        void ReleaseButton(int buttonID);
+        void PressButton(unsigned char button);
+        void ReleaseButton(unsigned char button);
 
         MouseClient CreateClient() const;
 

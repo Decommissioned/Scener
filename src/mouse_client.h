@@ -2,7 +2,6 @@
 #define MOUSE_CLIENT_HEADER
 
 #include "mouse_server.h"
-#include "enum_inputstate.h"
 
 class MouseClient final
 {

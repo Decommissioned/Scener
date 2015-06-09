@@ -15,8 +15,8 @@ MouseServer::~MouseServer()
 
 void MouseServer::Move(int dx, int dy)
 {
-        m_dx = dx;
-        m_dy = dy;
+        m_dx += dx;
+        m_dy += dy;
         m_x += dx;
         m_y += dy;
 }
@@ -32,12 +32,12 @@ void MouseServer::SetPosition(int x, int y)
 void MouseServer::Wheel(int dir)
 {
         m_wheel += dir;
-        m_dw = dir;
+        m_dw += dir;
 }
 
 void MouseServer::Update()
 {
-        m_dx = m_dy = m_dw;
+        m_dx = m_dy = m_dw = 0;
         for (auto& state : m_buttons)
         {
                 switch (state)
@@ -63,15 +63,15 @@ void MouseServer::Reset()
         m_x = m_y = 0;
 }
 
-void MouseServer::PressButton(int buttonID)
+void MouseServer::PressButton(unsigned char button)
 {
-        m_buffer[m_write_index] = {buttonID, true};
+        m_buffer[m_write_index] = {button, true};
         m_write_index = (m_write_index + 1) % m_buffer_size;
 }
 
-void MouseServer::ReleaseButton(int buttonID)
+void MouseServer::ReleaseButton(unsigned char button)
 {
-        m_buffer[m_write_index] = {buttonID, false};
+        m_buffer[m_write_index] = {button, false};
         m_write_index = (m_write_index + 1) % m_buffer_size;
 }
 
