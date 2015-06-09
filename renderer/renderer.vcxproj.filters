@@ -81,6 +81,15 @@
     <ClCompile Include="..\src\program_uniformbuffer.cpp">
       <Filter>Source Files\program</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\keyboard_client.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\keyboard_server.cpp">
+      <Filter>Source Files\input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\model_texture2d.cpp">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\renderer.h">
@@ -128,14 +137,8 @@
     <ClInclude Include="..\src\loader_scene.h">
       <Filter>Header Files\loader</Filter>
     </ClInclude>
-    <ClInclude Include="..\src\structure_mesh.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\loader_image.h">
       <Filter>Header Files\loader</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\structure_image.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\loader_utility.h">
       <Filter>Header Files\loader</Filter>
@@ -163,6 +166,24 @@
     </ClInclude>
     <ClInclude Include="..\src\enum_drivers.h">
       <Filter>Header Files\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\keyboard_client.h">
+      <Filter>Header Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\keyboard_server.h">
+      <Filter>Header Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\input.h">
+      <Filter>Source Files\input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\model_texture2d.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\structure_mesh.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\structure_image.h">
+      <Filter>Header Files\model</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
