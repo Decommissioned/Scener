@@ -1,18 +1,14 @@
 #ifndef MODEL_MESH_HEADER
 #define MODEL_MESH_HEADER
 
-#include "configuration.h"
+#include "model_base.h"
 #include "structure_mesh.h"
 
-class ModelMesh final
+class ModelMesh final : private ModelBase
 {
 
         const static uint32_t m_attributes = 4;
 
-        static uint32_t m_bound_vao;
-        static void bind(uint32_t vao);
-
-        uint32_t m_vao;
         uint32_t m_vbo[m_attributes];
         size_t m_vertices;
 
@@ -25,10 +21,7 @@ public:
 
         ~ModelMesh();
 
-        void Bind() const;
         void Draw() const;
-
-        uint32_t ID() const;
 
 };
 

@@ -1,17 +1,8 @@
+#include "enum_attributelayout.h"
 #include "model_mesh.h"
 #include "loader_obj.h"
-#include "enum_attributelayout.h"
 
 #include <GL/glew.h>
-
-void ModelMesh::bind(uint32_t vao)
-{
-        if (vao != m_bound_vao)
-        {
-                glBindVertexArray(vao);
-                m_bound_vao = vao;
-        }
-}
 
 ModelMesh::ModelMesh(const Mesh& data)
 {
@@ -20,7 +11,7 @@ ModelMesh::ModelMesh(const Mesh& data)
         glGenVertexArrays(1, &m_vao);
         glGenBuffers(m_attributes, m_vbo);
 
-        bind(m_vao);
+        bind();
 
         if (data.indices.size() != 0)
         {
@@ -63,20 +54,8 @@ ModelMesh::~ModelMesh()
         glDeleteVertexArrays(1, &m_vao);
 }
 
-void ModelMesh::Bind() const
-{
-        bind(m_vao);
-}
-
 void ModelMesh::Draw() const
 {
-        bind(m_vao);
+        bind();
         glDrawElements(GL_TRIANGLES, m_vertices, GL_UNSIGNED_INT, 0);
 }
-
-uint32_t ModelMesh::ID() const
-{
-        return m_vao;
-}
-
-uint32_t ModelMesh::m_bound_vao = 0;
