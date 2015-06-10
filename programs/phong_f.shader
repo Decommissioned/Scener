@@ -7,7 +7,7 @@ in vec2 v_uv;
 out vec4 color;
 
 uniform sampler2D sampler;
-uniform int u_enable_texture;
+uniform bool u_enable_texture;
 
 uniform vec3 u_ka;
 uniform vec3 u_kd;
@@ -64,7 +64,7 @@ void main()
 
     vec3 result = (u_ka * g_ambient_light.xyz) + total;
     color = vec4(result, 1.0);
-    if (u_enable_texture != 0)
+    if (u_enable_texture)
     {
         color *= texture(sampler, v_uv);
     }
