@@ -16,12 +16,15 @@ static const mat4 identity = mat4(1.0f);
 
 void Renderer::LoadResources(const string& meshes_dir, const string& textures_dir)
 {
+        std::cout << "Loading meshes ..." << std::endl;
         auto mesh_files = ListFiles(meshes_dir, ".obj");
         for (auto& file : mesh_files)
         {
                 auto mesh = LoadWavefrontObject(file);
                 m_meshes.emplace(std::make_pair(mesh.name, mesh));
         }
+
+        std::cout << "Loading textures ..." << std::endl;
         auto texture_files = ListFiles(textures_dir, ".png");
         for (auto& file : texture_files)
         {
@@ -30,14 +33,15 @@ void Renderer::LoadResources(const string& meshes_dir, const string& textures_di
         }
 }
 
-Renderer::Renderer(const string& meshes_dir, const string& textures_dir, const string& shaders_dir) : m_program_phong(shaders_dir)
+Renderer::Renderer(const string& meshes_dir, const string& textures_dir, const string& shaders_dir)
+        : m_program_phong(shaders_dir), m_program_terrain(shaders_dir), m_terrain("whatever")
 {
         LoadResources(meshes_dir, textures_dir);
 
-        m_ubo.AddPrograms({m_program_phong.ID()}, "global");
+        m_ubo.AddPrograms({m_program_phong.ID(), m_program_terrain.ID()}, "global");
 
         glEnable(GL_DEPTH_TEST);
-        glEnable(GL_CULL_FACE);
+        //glEnable(GL_CULL_FACE);
         ticks = 0;
 }
 
@@ -65,9 +69,9 @@ void Renderer::Draw(const Scene& scene)
         glClearColor(scene.clearColor.x, scene.clearColor.y, scene.clearColor.z, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        m_program_phong.Bind();
         m_ubo.Update(uniforms);
 
+        m_program_phong.Bind();
         for (auto& item : scene.objects)
         {
                 auto& mesh = m_meshes.find(item.mesh);
@@ -101,6 +105,9 @@ void Renderer::Draw(const Scene& scene)
                         mesh->second.Draw();
                 }
         }
+
+        m_program_terrain.Bind();
+        m_terrain.Draw();
 
         ticks++;
         assert(glGetError() == 0);

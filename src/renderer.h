@@ -8,8 +8,12 @@
 
 #include "model_mesh.h"
 #include "model_texture2d.h"
+
 #include "program_phong.h"
+#include "program_terrain.h"
 #include "program_uniformbuffer.h"
+
+#include "procedural_terrain.h"
 
 /*
 *
@@ -35,8 +39,14 @@ class Renderer final
         };
 
         Global m_global;
+
         ProgramPhong m_program_phong;
+        ProgramTerrain m_program_terrain;
+
         UniformBuffer m_ubo;
+
+        ProceduralTerrain m_terrain;
+
         std::unordered_map<string, ModelMesh> m_meshes;
         std::unordered_map<string, Texture2D> m_textures;
 
