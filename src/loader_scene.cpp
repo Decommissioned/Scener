@@ -12,6 +12,10 @@
 
 using namespace boost::property_tree;
 
+// To add a new component:
+// 1. Add a default value to the default function, if it's a new structure entirely, define the default value for it
+// 2. Use the read_scalar macro to load a value to it, if it's a new structure entirely use the read_function macro
+
 static Skybox default_Skybox()
 {
         Skybox skybox;
@@ -243,6 +247,7 @@ Scene LoadScene(const string& path)
                 read_function(tree, "DirectionalLights", scene.directionalLights, read_DirectionalLights);
                 read_function(tree, "PointLights", scene.pointLights, read_PointLights);
                 read_function(tree, "Objects", scene.objects, read_Objects);
+
                 return scene;
         }
         catch (const json_parser_error& error)

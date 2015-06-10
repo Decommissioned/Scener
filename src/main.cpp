@@ -111,14 +111,17 @@ void worker_render(SDL_Window* window, Scene& scene)
 
         Renderer renderer("../meshes", "../textures", "../programs");
 
-        SDL_ShowWindow(window);
+        // Trap mouse cursor only after loading the assets
+        SDL_ShowCursor(0);
+        SDL_SetRelativeMouseMode(SDL_TRUE);
+
         while (!quit)
         {
                 auto now = std::chrono::system_clock::now();
 
+                keyboard.Update();
                 handleControls(scene.camera);
                 mouse.Update();
-                keyboard.Update();
 
                 renderer.Draw(scene);
                 SDL_GL_SwapWindow(window);
@@ -141,10 +144,6 @@ void initialize_SDL()
         SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
         SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
         // Enable vsync
-        SDL_GL_SetSwapInterval(1);
-        // Trap mouse cursor
-        SDL_ShowCursor(0);
-        SDL_SetRelativeMouseMode(SDL_TRUE);
 }
 
 int main(int argc, char**argv)
