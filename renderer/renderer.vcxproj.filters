@@ -90,6 +90,18 @@
     <ClCompile Include="..\src\model_texture2d.cpp">
       <Filter>Source Files\model</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\algorithm_perlin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\procedural_terrain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\model_base.cpp">
+      <Filter>Source Files\model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\program_terrain.cpp">
+      <Filter>Source Files\program</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\src\renderer.h">
@@ -184,6 +196,18 @@
     </ClInclude>
     <ClInclude Include="..\src\structure_image.h">
       <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\algorithm_perlin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\procedural_terrain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\model_base.h">
+      <Filter>Header Files\model</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\program_terrain.h">
+      <Filter>Header Files\program</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

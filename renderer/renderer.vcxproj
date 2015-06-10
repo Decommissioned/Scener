@@ -74,7 +74,7 @@
       <TreatWarningAsError>false</TreatWarningAsError>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
-      <MinimalRebuild>true</MinimalRebuild>
+      <MinimalRebuild>false</MinimalRebuild>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
@@ -86,6 +86,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\algorithm_perlin.cpp" />
     <ClCompile Include="..\src\keyboard_client.cpp" />
     <ClCompile Include="..\src\keyboard_server.cpp" />
     <ClCompile Include="..\src\loader_image.cpp" />
@@ -93,17 +94,21 @@
     <ClCompile Include="..\src\loader_shader.cpp" />
     <ClCompile Include="..\src\loader_utility.cpp" />
     <ClCompile Include="..\src\main.cpp" />
+    <ClCompile Include="..\src\model_base.cpp" />
     <ClCompile Include="..\src\model_mesh.cpp" />
     <ClCompile Include="..\src\model_texture2d.cpp" />
     <ClCompile Include="..\src\mouse_server.cpp" />
     <ClCompile Include="..\src\mouse_client.cpp" />
+    <ClCompile Include="..\src\procedural_terrain.cpp" />
     <ClCompile Include="..\src\program.cpp" />
     <ClCompile Include="..\src\program_phong.cpp" />
+    <ClCompile Include="..\src\program_terrain.cpp" />
     <ClCompile Include="..\src\program_uniformbuffer.cpp" />
     <ClCompile Include="..\src\renderer.cpp" />
     <ClCompile Include="..\src\loader_scene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\src\algorithm_perlin.h" />
     <ClInclude Include="..\src\enum_attributelayout.h" />
     <ClInclude Include="..\src\enum_drivers.h" />
     <ClInclude Include="..\src\input.h" />
@@ -115,12 +120,14 @@
     <ClInclude Include="..\src\loader_scene.h" />
     <ClInclude Include="..\src\loader_shader.h" />
     <ClInclude Include="..\src\loader_utility.h" />
+    <ClInclude Include="..\src\model_base.h" />
     <ClInclude Include="..\src\model_mesh.h" />
     <ClInclude Include="..\src\model_texture2d.h" />
     <ClInclude Include="..\src\mouse_server.h" />
     <ClInclude Include="..\src\mouse_client.h" />
     <ClInclude Include="..\src\program.h" />
     <ClInclude Include="..\src\program_phong.h" />
+    <ClInclude Include="..\src\program_terrain.h" />
     <ClInclude Include="..\src\program_uniformbuffer.h" />
     <ClInclude Include="..\src\structure_camera.h" />
     <ClInclude Include="..\src\configuration.h" />
@@ -135,6 +142,7 @@
     <ClInclude Include="..\src\structure_skybox.h" />
     <ClInclude Include="..\src\structure_terrain.h" />
     <ClInclude Include="..\src\structure_window.h" />
+    <ClInclude Include="..\src\procedural_terrain.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
