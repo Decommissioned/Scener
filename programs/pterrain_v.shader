@@ -2,6 +2,8 @@
 
 in vec2 a_position;
 
+out float h;
+
 float random(vec2 coordinate)
 {
     const vec2 seed = vec2(12.9898, 78.233);
@@ -28,6 +30,8 @@ float height()
 
 void main()
 {
-    vec3 vertex = vec3(a_position.x, height(), a_position.y) * 2.5;
+    float y = height();
+    vec3 vertex = vec3(a_position.x, y * 2.0 - 2.0, a_position.y) * 2.5;
+    h = y;
     gl_Position = g_projection * g_view * vec4(vertex, 1.0);
 }
