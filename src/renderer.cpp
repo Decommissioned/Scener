@@ -41,7 +41,7 @@ Renderer::Renderer(const string& meshes_dir, const string& textures_dir, const s
         m_ubo.AddPrograms({m_program_phong.ID(), m_program_terrain.ID()}, "global");
 
         glEnable(GL_DEPTH_TEST);
-        //glEnable(GL_CULL_FACE);
+        glEnable(GL_CULL_FACE);
         ticks = 0;
 }
 

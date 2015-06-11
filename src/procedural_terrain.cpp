@@ -8,43 +8,40 @@
 ProceduralTerrain::ProceduralTerrain(const string& seed)
 {
 
-        const float spacing = 1.0f;
-        const size_t size = 100;
-        const size_t sizei = size - 1;
-
-        m_vertices = sizei * sizei * 6;
+        const float spacing = 3.0f;
+        const size_t size = 10;
 
         float delta2 = float(size) * spacing / 2.0f;
-        float step = spacing / float(size);
 
         std::vector<float> grid;
         grid.reserve(size * size * 2);
         std::vector<uint32_t> indices;
-        indices.reserve(m_vertices);
+        indices.reserve((size - 1) * (size - 1) * 6);
 
         float z = -delta2;
-        for (size_t k = 0; k < size; k++, z+=step)
+        for (size_t k = 0; k < size; k++, z+=spacing)
         {
                 float x = -delta2;
-                for (size_t i = 0; i < size; i++, x+=step)
+                for (size_t i = 0; i < size; i++, x+=spacing)
                 {
                         grid.emplace_back(x);
                         grid.emplace_back(z);
                 }
         }
 
-        for (size_t k = 0; k < sizei; k++)
+        for (size_t k = 0; k < (size - 1); k++)
         {
-                for (size_t i = 0; i < sizei; i++)
+                for (size_t i = 0; i < (size - 1); i++)
                 {
-                        indices.emplace_back(sizei * k + i);
-                        indices.emplace_back(sizei * k + i + 1);
-                        indices.emplace_back(sizei * k + i + sizei);
-                        indices.emplace_back(sizei * k + i + 1);
-                        indices.emplace_back(sizei * k + i + sizei + 1);
-                        indices.emplace_back(sizei * k + i + sizei);
+                        indices.emplace_back(size * k + i + size);
+                        indices.emplace_back(size * k + i + 1);
+                        indices.emplace_back(size * k + i);
+                        indices.emplace_back(size * k + i + size);
+                        indices.emplace_back(size * k + i + size + 1);
+                        indices.emplace_back(size * k + i + 1);
                 }
         }
+        m_vertices = indices.size();
 
         glGenVertexArrays(1, &m_vao);
         glGenBuffers(m_attributes, m_vbo);
